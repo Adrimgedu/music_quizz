@@ -1,5 +1,6 @@
 import streamlit as st
-import pandas as pd
+
+import json
 
 
 # Estilos personalizados
@@ -32,7 +33,9 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-quiz_df = pd.read_csv('quiz.csv')
+with open('quiz.json', 'r', encoding='utf-8') as f:
+    quiz_data = json.load(f)
+num_questions = len(quiz_data)
 
 st.set_page_config(page_title="ANALYTICS & IA MUSIC", page_icon="🎤")
 
@@ -80,9 +83,11 @@ if 'current_question' not in st.session_state:
     </style>
     """, unsafe_allow_html=True)
 
-    # Cargar el CSV
-    quiz_df = pd.read_csv('quiz.csv')
-    num_questions = len(quiz_df)
+
+    # Cargar el JSON
+    with open('quiz.json', 'r', encoding='utf-8') as f:
+        quiz_data = json.load(f)
+    num_questions = len(quiz_data)
 
     # Inicializar variables de sesión
     default_values = {
@@ -103,7 +108,7 @@ if 'current_question' not in st.session_state:
     def submit_answer():
         if st.session_state.selected_option is not None:
             st.session_state.answer_submitted = True
-            correct = quiz_df.iloc[st.session_state.current_index]['Correct Option']
+            correct = quiz_data[st.session_state.current_index]['answer']
             if st.session_state.selected_option == correct:
                 st.session_state.score += 10
         else:
@@ -120,11 +125,12 @@ if 'current_question' not in st.session_state:
     st.metric(label="Puntuación", value=f"{st.session_state.score} / {num_questions * 10}")
     st.progress(progress_bar_value)
 
+
     # Mostrar pregunta y opciones
-    row = quiz_df.iloc[st.session_state.current_index]
-    question = row['Question']
-    options = [row[f'Option {i}'] for i in range(1, 14) if pd.notna(row.get(f'Option {i}'))]
-    correct_answer = row['Correct Option']
+    question_item = quiz_data[st.session_state.current_index]
+    question = question_item['question']
+    options = question_item['options']
+    correct_answer = question_item['answer']
 
     st.markdown('<div class="quiz-card">', unsafe_allow_html=True)
     st.subheader(f"Pregunta {st.session_state.current_index + 1}")
