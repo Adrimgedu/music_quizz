@@ -1,8 +1,5 @@
-
 import streamlit as st
-
-import json
-from streamlit_option_menu import option_menu
+import pandas as pd
 
 
 # Estilos personalizados
@@ -83,11 +80,9 @@ if 'current_question' not in st.session_state:
     </style>
     """, unsafe_allow_html=True)
 
-
-    # Cargar el JSON
-    with open('quiz.json', 'r', encoding='utf-8') as f:
-        quiz_data = json.load(f)
-    num_questions = len(quiz_data)
+    # Cargar el CSV
+    quiz_df = pd.read_csv('quiz.csv')
+    num_questions = len(quiz_df)
 
     # Inicializar variables de sesión
     default_values = {
@@ -126,11 +121,10 @@ if 'current_question' not in st.session_state:
     st.progress(progress_bar_value)
 
     # Mostrar pregunta y opciones
-
-    question_item = quiz_data[st.session_state.current_index]
-    question = question_item['question']
-    options = question_item['options']
-    correct_answer = question_item['answer']
+    row = quiz_df.iloc[st.session_state.current_index]
+    question = row['Question']
+    options = [row[f'Option {i}'] for i in range(1, 14) if pd.notna(row.get(f'Option {i}'))]
+    correct_answer = row['Correct Option']
 
     st.markdown('<div class="quiz-card">', unsafe_allow_html=True)
     st.subheader(f"Pregunta {st.session_state.current_index + 1}")
@@ -148,22 +142,22 @@ if 'current_question' not in st.session_state:
                 st.write(label)
 
     else:
-        selected = option_menu(
-            "Selecciona tu respuesta:",
-            options,
-            icons=["circle" for _ in options],
-            menu_icon="cast",
-            default_index=options.index(st.session_state.selected_option) if st.session_state.selected_option in options else 0,
-            orientation="vertical",
-            styles={
-                "container": {"background-color": "#fff", "border-radius": "18px", "box-shadow": "0 4px 24px rgba(99,102,241,0.10)", "padding": "12px"},
-                "icon": {"color": "#6366f1", "font-size": "1.2em"},
-                "nav-link": {"font-size": "1.1em", "color": "#6366f1", "background": "#f3f4f6", "margin": "6px", "border-radius": "10px"},
-                "nav-link-selected": {"background": "linear-gradient(90deg, #6366f1 0%, #f43f5e 100%)", "color": "#fff"},
-            }
-        )
-        if selected:
-            st.session_state.selected_option = selected
+        cols = st.columns(1)
+        for i, option in enumerate(options):
+            btn_style = ""
+            # Si la opción está seleccionada, destacar el botón
+            if st.session_state.selected_option == option:
+                btn_style = "background: linear-gradient(90deg, #f43f5e 0%, #6366f1 100%); color: #fff; border: 2px solid #6366f1; box-shadow: 0 2px 8px rgba(99,102,241,0.18);"
+            else:
+                btn_style = "background: #fff; color: #6366f1; border: 2px solid #f43f5e;"
+            st.markdown(f"""
+            <div style='margin-bottom:12px;'>
+                <button style='width:100%;font-size:1.1em;padding:16px 0;border-radius:12px;{btn_style}' onclick="window.location.href='#{i}'">{option}</button>
+            </div>
+            """, unsafe_allow_html=True)
+            # El botón real para la lógica
+            if st.button(f"Seleccionar: {option}", key=f"select_{i}", use_container_width=True):
+                st.session_state.selected_option = option
 
     st.markdown(""" ___""")
 
