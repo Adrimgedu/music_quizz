@@ -45,9 +45,10 @@ st.progress(progress_bar_value)
 
 if not st.session_state.review_mode:
     # Pregunta actual
+    # Pregunta actual
     q_idx = st.session_state.current_index
     question_item = quiz_data[q_idx]
-    st.subheader(f"Pregunta {q_idx+1} de {num_questions}")
+    st.markdown(f"<h2 style='font-size:2.2em;margin-bottom:0.2em;'>Pregunta {q_idx+1} de {num_questions}</h2>", unsafe_allow_html=True)
     st.write(question_item['question'])
     st.write("Selecciona tu respuesta:")
     selected = st.session_state.answers[q_idx]
@@ -56,21 +57,25 @@ if not st.session_state.review_mode:
         if st.button(opt, key=f"ans_{q_idx}_{opt}", use_container_width=True):
             st.session_state.answers[q_idx] = opt
             selected = opt
+            st.markdown("<a id='top'></a>", unsafe_allow_html=True)
+            st.rerun()
 
-   # Centrar el botón siguiente
+    # Preview selected answer
+    if selected:
+        st.info(f"Respuesta seleccionada: {selected}")
+    else:
+        st.info("No has seleccionado ninguna respuesta.")
+
+    # Centrar el botón siguiente
     col_next = st.columns([1,2,1])[1]
     with col_next:
         avanzar = st.button("Siguiente", key=f"next_{q_idx}")
-
-    if avanzar:
-        if not st.session_state.answers[q_idx]:
-            st.warning("Selecciona una opción antes de continuar.")
-        else:
-            if q_idx < num_questions - 1:
-                st.session_state.current_index += 1
-            else:
-                st.session_state.review_mode = True
-            st.rerun()  # <- fuerza el rerun inmediato
+    if avanzar and st.session_state.answers[q_idx]:
+        st.markdown("<a id='top'></a>", unsafe_allow_html=True)
+        next_question()
+        st.rerun()
+    elif avanzar:
+        st.warning("Selecciona una opción antes de continuar.")
 else:
     st.header("Revisión de respuestas")
     for i, question_item in enumerate(quiz_data):
@@ -86,5 +91,15 @@ else:
         submit_review()
     if st.session_state.score > 0:
         st.success(f"Puntuación final: {st.session_state.score} / {num_questions * 10}")
+        st.markdown("---")
+        st.header("Respuestas correctas")
+        for i, q in enumerate(quiz_data):
+            user_ans = st.session_state.answers[i]
+            correct_ans = q['answer']
+            if user_ans == correct_ans:
+                st.markdown(f"<b>{q['question']}</b><br>✅ <span style='color:green'>Tu respuesta: {user_ans}</span>", unsafe_allow_html=True)
+            else:
+                st.markdown(f"<b>{q['question']}</b><br>❌ <span style='color:red'>Tu respuesta: {user_ans if user_ans else 'Sin respuesta'}</span><br>✔️ <span style='color:blue'>Correcta: {correct_ans}</span>", unsafe_allow_html=True)
+            st.markdown("---")
     if st.button("Reiniciar", key="restart_quiz"):
         restart_quiz()
