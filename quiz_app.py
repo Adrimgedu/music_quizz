@@ -1,172 +1,90 @@
-
-
 import streamlit as st
 import json
-st.set_page_config(page_title="ANALYTICS & IA MUSIC", page_icon="🎤")
 
-# Custom CSS for the buttons and card
-st.markdown("""
-<style>
-body {
-    background: #f8fafc;
-}
-.quiz-card {
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 4px 16px rgba(99,102,241,0.08);
-    padding: 6vw 4vw;
-    margin: 6vw auto;
-    max-width: 98vw;
-    width: 100%;
-    border: 2px solid #6366f1;
-}
-div.stButton > button {
-    display: block;
-    margin: 3vw auto;
-    background: #fff !important;
-    color: #222 !important;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 1.1em;
-    padding: 4vw 0;
-    border: 2px solid #222 !important;
-    box-shadow: 0 2px 8px rgba(99,102,241,0.06);
-    transition: background 0.2s, color 0.2s, transform 0.2s;
-    width: 100%;
-    max-width: 500px;
-}
-div.stButton > button.selected-btn {
-    background: #2563eb !important;
-    color: #fff !important;
-    border: 2px solid #2563eb !important;
-}
-div.stButton > button:hover {
-    background: #e0e7ff !important;
-    color: #222 !important;
-    transform: scale(1.04);
-}
-@media (max-width: 600px) {
-    .quiz-card {
-        padding: 7vw 2vw;
-        margin: 4vw auto;
-        border-radius: 12px;
-        max-width: 100vw;
-    }
-    div.stButton > button {
-        font-size: 1em;
-        padding: 5vw 0;
-        border-radius: 10px;
-        max-width: 98vw;
-    }
-}
-</style>
-""", unsafe_allow_html=True)
+st.set_page_config(page_title="Quizz IA Music", page_icon="🎤")
 
 with open('quiz.json', 'r', encoding='utf-8') as f:
     quiz_data = json.load(f)
 num_questions = len(quiz_data)
 
 # Inicializar variables de sesión
-default_values = {
-    'current_index': 0,
-    'score': 0,
-    'selected_option': None,
-    'answer_submitted': False
-}
-for key, value in default_values.items():
-    st.session_state.setdefault(key, value)
-
-def restart_quiz():
+if 'answers' not in st.session_state:
+    st.session_state.answers = [None] * num_questions
+if 'current_index' not in st.session_state:
     st.session_state.current_index = 0
+if 'review_mode' not in st.session_state:
+    st.session_state.review_mode = False
+if 'score' not in st.session_state:
     st.session_state.score = 0
-    st.session_state.selected_option = None
-    st.session_state.answer_submitted = False
 
-def submit_answer():
-    if st.session_state.selected_option is not None:
-        st.session_state.answer_submitted = True
-        correct = quiz_data[st.session_state.current_index]['answer']
-        if st.session_state.selected_option == correct:
-            st.session_state.score += 10
-    else:
-        st.warning("Por favor selecciona una opción antes de enviar.")
-
+# Función para pasar a la siguiente pregunta
 def next_question():
-    st.session_state.current_index += 1
-    st.session_state.selected_option = None
-    st.session_state.answer_submitted = False
+    if st.session_state.current_index < num_questions - 1:
+        st.session_state.current_index += 1
+    else:
+        st.session_state.review_mode = True
 
-# Título y barra de progreso
-st.title("El quizz de IA Music 🎤")
+# Función para reiniciar el quiz
+def restart_quiz():
+    st.session_state.answers = [None] * num_questions
+    st.session_state.current_index = 0
+    st.session_state.review_mode = False
+    st.session_state.score = 0
+
+# Función para corregir respuestas
+def submit_review():
+    score = 0
+    for i, q in enumerate(quiz_data):
+        if st.session_state.answers[i] == q['answer']:
+            score += 10
+    st.session_state.score = score
+
+st.title("Quizz IA Music - Revisión 🎤")
 progress_bar_value = (st.session_state.current_index + 1) / num_questions
-st.metric(label="Puntuación", value=f"{st.session_state.score} / {num_questions * 10}")
 st.progress(progress_bar_value)
 
-# Mostrar pregunta y opciones
-question_item = quiz_data[st.session_state.current_index]
-question = question_item['question']
-options = question_item['options']
-correct_answer = question_item['answer']
+if not st.session_state.review_mode:
+    # Pregunta actual
+    q_idx = st.session_state.current_index
+    question_item = quiz_data[q_idx]
+    st.subheader(f"Pregunta {q_idx+1} de {num_questions}")
+    st.write(question_item['question'])
+    st.write("Selecciona tu respuesta:")
+    selected = st.session_state.answers[q_idx]
+    for opt in question_item['options']:
+        btn_style = "background:#2563eb;color:#fff;" if selected == opt else "background:#fff;color:#222;"
+        if st.button(opt, key=f"ans_{q_idx}_{opt}", use_container_width=True):
+            st.session_state.answers[q_idx] = opt
+            selected = opt
 
-#st.markdown('<div class="quiz-card">', unsafe_allow_html=True)
-st.subheader(f"Pregunta {st.session_state.current_index + 1}")
-st.title(f"{question}")
-st.markdown(""" ___""")
+   # Centrar el botón siguiente
+    col_next = st.columns([1,2,1])[1]
+    with col_next:
+        avanzar = st.button("Siguiente", key=f"next_{q_idx}")
 
-if st.session_state.answer_submitted:
-    for i, option in enumerate(options):
-        label = option
-        if option == correct_answer:
-            st.success(f"{label} (Respuesta correcta)")
-        elif option == st.session_state.selected_option:
-            st.error(f"{label} (Respuesta incorrecta)")
+    if avanzar:
+        if not st.session_state.answers[q_idx]:
+            st.warning("Selecciona una opción antes de continuar.")
         else:
-            st.write(label)
+            if q_idx < num_questions - 1:
+                st.session_state.current_index += 1
+            else:
+                st.session_state.review_mode = True
+            st.rerun()  # <- fuerza el rerun inmediato
 else:
-    for i, option in enumerate(options):
-        if st.button(option, key=f"select_{i}", use_container_width=True):
-            st.session_state.selected_option = option
-    # Show selected button as blue after selection
-    if st.session_state.selected_option:
-        for i, option in enumerate(options):
-            if st.session_state.selected_option == option:
-                st.markdown(f"""
-                <div style='margin-bottom:12px;'>
-                    <button style='width:100%;font-size:1.1em;padding:4vw 0;border-radius:12px;background:#2563eb;color:#fff;border:2px solid #2563eb;font-weight:bold;' disabled>{option}</button>
-                </div>
-                """, unsafe_allow_html=True)
-
-st.markdown(""" ___""")
-
-# Botón de envío y navegación
-if st.session_state.answer_submitted:
-    if st.session_state.current_index < num_questions - 1:
-        st.button('Siguiente', on_click=next_question)
-    else:
-        st.write(f"<span style='font-size:1.3em;font-weight:bold;color:#f43f5e'>🎉 ¡Quiz terminado!</span>", unsafe_allow_html=True)
-        st.write(f"<span style='font-size:1.2em;color:#6366f1'>Tu puntuación es: <b>{st.session_state.score} / {num_questions * 10}</b></span>", unsafe_allow_html=True)
-        st.balloons()
-        if st.button('🔄 Reiniciar', on_click=restart_quiz):
-            pass
-else:
-    if st.session_state.current_index < num_questions:
-        st.markdown("""
-        <style>
-        .enviar-btn {
-            background: #2563eb !important;
-            color: #fff !important;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 1.1em;
-            padding: 1em 0;
-            border: none;
-            width: 100%;
-            max-width: 500px;
-            margin: 0.5em auto 1em auto;
-            display: block;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        st.button('Enviar', on_click=submit_answer, key='enviar', use_container_width=True)
-
-st.markdown('</div>', unsafe_allow_html=True)
+    st.header("Revisión de respuestas")
+    for i, question_item in enumerate(quiz_data):
+        st.write(f"**{question_item['question']}**")
+        st.session_state.answers[i] = st.selectbox(
+            "Selecciona tu respuesta:",
+            question_item['options'],
+            index=question_item['options'].index(st.session_state.answers[i]) if st.session_state.answers[i] else 0,
+            key=f"review_{i}"
+        )
+        st.markdown("---")
+    if st.button("Enviar respuestas y corregir", key="submit_review"):
+        submit_review()
+    if st.session_state.score > 0:
+        st.success(f"Puntuación final: {st.session_state.score} / {num_questions * 10}")
+    if st.button("Reiniciar", key="restart_quiz"):
+        restart_quiz()
