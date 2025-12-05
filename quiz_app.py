@@ -8,12 +8,12 @@ st.set_page_config(page_title="ANALYTICS & IA MUSIC", page_icon="🎤")
 st.markdown("""
 <style>
 body {
-    background: linear-gradient(120deg, #f43f5e 0%, #6366f1 100%);
+    background: #f8fafc;
 }
 .quiz-card {
-    background: rgba(255,255,255,0.97);
+    background: #fff;
     border-radius: 18px;
-    box-shadow: 0 4px 16px rgba(99,102,241,0.12), 0 1.5px 8px rgba(244,63,94,0.10);
+    box-shadow: 0 4px 16px rgba(99,102,241,0.08);
     padding: 6vw 4vw;
     margin: 6vw auto;
     max-width: 98vw;
@@ -23,20 +23,26 @@ body {
 div.stButton > button {
     display: block;
     margin: 3vw auto;
-    background: linear-gradient(90deg, #6366f1 0%, #f43f5e 100%);
-    color: #fff;
+    background: #fff !important;
+    color: #222 !important;
     border-radius: 12px;
     font-weight: bold;
     font-size: 1.1em;
     padding: 4vw 0;
-    border: none;
-    box-shadow: 0 2px 8px rgba(99,102,241,0.10);
-    transition: background 0.2s, transform 0.2s;
+    border: 2px solid #222 !important;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.06);
+    transition: background 0.2s, color 0.2s, transform 0.2s;
     width: 100%;
     max-width: 500px;
 }
+div.stButton > button.selected-btn {
+    background: #2563eb !important;
+    color: #fff !important;
+    border: 2px solid #2563eb !important;
+}
 div.stButton > button:hover {
-    background: linear-gradient(90deg, #f43f5e 0%, #6366f1 100%);
+    background: #e0e7ff !important;
+    color: #222 !important;
     transform: scale(1.04);
 }
 @media (max-width: 600px) {
@@ -120,6 +126,15 @@ else:
     for i, option in enumerate(options):
         if st.button(option, key=f"select_{i}", use_container_width=True):
             st.session_state.selected_option = option
+    # Show selected button as blue after selection
+    if st.session_state.selected_option:
+        for i, option in enumerate(options):
+            if st.session_state.selected_option == option:
+                st.markdown(f"""
+                <div style='margin-bottom:12px;'>
+                    <button style='width:100%;font-size:1.1em;padding:4vw 0;border-radius:12px;background:#2563eb;color:#fff;border:2px solid #2563eb;font-weight:bold;' disabled>{option}</button>
+                </div>
+                """, unsafe_allow_html=True)
 
 st.markdown(""" ___""")
 
@@ -135,6 +150,23 @@ if st.session_state.answer_submitted:
             pass
 else:
     if st.session_state.current_index < num_questions:
-        st.button('Enviar', on_click=submit_answer)
+        st.markdown("""
+        <style>
+        .enviar-btn {
+            background: #2563eb !important;
+            color: #fff !important;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1.1em;
+            padding: 1em 0;
+            border: none;
+            width: 100%;
+            max-width: 500px;
+            margin: 0.5em auto 1em auto;
+            display: block;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        st.button('Enviar', on_click=submit_answer, key='enviar', use_container_width=True)
 
 st.markdown('</div>', unsafe_allow_html=True)
