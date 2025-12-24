@@ -1,67 +1,52 @@
 [
   {
-    "question": "1. Warrior – Imagine Dragons",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Alberto Gámez"
+    "question": "1. Questo piccolo grande amore - Claudio Baglioni",
+    "options": ["Chiara", "Paolo", "Andrea", "Sabina", "Luca", "Emma", "Adri", "Franci", "Marco", "Roberto", "Loredana", "Margherita"],
+    "answer": "Loredana"
   },
   {
-    "question": "2. Ama, Ama y ensancha el alma - Extremoduro",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Jesús"
+    "question": "2. Pursuit of happiness - Kid Kudi, MGMT",
+    "options": ["Chiara", "Paolo", "Andrea", "Sabina", "Luca", "Emma", "Adri", "Franci", "Marco", "Roberto", "Loredana", "Margherita"],
+    "answer": "Franci"
   },
   {
-    "question": "3. Sor Citroen - Antón García Abril",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Rafa"
+    "question": "3. Karaoke - Alessandra Amoroso e Boomdabash",
+    "options": ["Chiara", "Paolo", "Andrea", "Sabina", "Luca", "Emma", "Adri", "Franci", "Marco", "Roberto", "Loredana", "Margherita"],
+    "answer": "Margherita"
   },
   {
-    "question": "4. Fabulous - Sharpay Evans",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Mercedes"
+    "question": "4. Daydreamin' - Lupe Fiasco, Jill Scott",
+    "options": ["Chiara", "Paolo", "Andrea", "Sabina", "Luca", "Emma", "Adri", "Franci", "Marco", "Roberto", "Loredana", "Margherita"],
+    "answer": "Marco"
   },
   {
-    "question": "5. Roman Reigns - Head of the Table",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Diego"
+    "question": "5. Mambo Salentino - Boomdabash e Alessandra Amoroso",
+    "options": ["Chiara", "Paolo", "Andrea", "Sabina", "Luca", "Emma", "Adri", "Franci", "Marco", "Roberto", "Loredana", "Margherita"],
+    "answer": "Luca"
   },
   {
-    "question": "6. Nada de nada - Cecilia",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Marina"
+    "question": "6. Vamos a la playa - Righeira",
+    "options": ["Chiara", "Paolo", "Andrea", "Sabina", "Luca", "Emma", "Adri", "Franci", "Marco", "Roberto", "Loredana", "Margherita"],
+    "answer": "Roberto"
   },
   {
-    "question": "7- A la Mancha - Jota Manchega, Coros y Danzas de Mora",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Sole"
+    "question": "7- L'anno che verrà- Lucio Dalla",
+    "options": ["Chiara", "Paolo", "Andrea", "Sabina", "Luca", "Emma", "Adri", "Franci", "Marco", "Roberto", "Loredana", "Margherita"],
+    "answer": "Paolo"
   },
   {
-    "question": "8. El Nano - Melendi",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Sergio"
+    "question": "8. Il cielo - Renato Zero",
+    "options": ["Chiara", "Paolo", "Andrea", "Sabina", "Luca", "Emma", "Adri", "Franci", "Marco", "Roberto", "Loredana", "Margherita"],
+    "answer": "Sabina"
   },
   {
-    "question": "9. I'm Still Standing – Elton John",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
+    "question": "9. Belong Together - Mark Ambor",
+    "options": ["Chiara", "Paolo", "Andrea", "Sabina", "Luca", "Emma", "Adri", "Franci", "Marco", "Roberto", "Loredana", "Margherita"],
+    "answer": "Chiara"
+  },
+  {
+    "question": "10. Andiamo a comandare - Fabio Rovazzi",
+    "options": ["Chiara", "Paolo", "Andrea", "Sabina", "Luca", "Emma", "Adri", "Franci", "Marco", "Roberto", "Loredana", "Margherita"],
     "answer": "Adri"
-  },
-  {
-    "question": "10. El de medio de los chichos - Estopa",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Alberto Humanes"
-  },
-  {
-    "question": "11. Mi Gran Noche - Raphael",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Carlos"
-  },
-  {
-    "question": "12. Unreachable - John Frusciante",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Álvaro"
-  },
-  {
-    "question": "13. Rata de dos patas - Paquita la del Barrio",
-    "options": ["Marina", "Mercedes", "Carlos", "Álvaro", "Diego", "Sergio", "Alberto Gámez", "Alberto Humanes", "Rafa", "Laura", "Sole", "Jesús", "Adri"],
-    "answer": "Laura"
   }
 ]
